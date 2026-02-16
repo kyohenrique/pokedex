@@ -4,6 +4,7 @@ import { typeColors } from "../utils/typeColors"
 interface PokemonCardProps {
   name: string;
   url: string;
+  onClick: () => void;
 }
 
 interface PokemonType {
@@ -19,7 +20,7 @@ interface PokemonDetails {
   }
 }
 
-export default function PokemonCard({ name, url }: PokemonCardProps) {
+export default function PokemonCard({ name, url, onClick }: PokemonCardProps) {
   const [detalhes, setDetalhes] = useState<PokemonDetails | null>(null)
 
   const partes = url.split('/')
@@ -40,7 +41,7 @@ export default function PokemonCard({ name, url }: PokemonCardProps) {
   }, [url])
 
   return (
-    <div className="relative text-center p-3 border border-zinc-700 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition-colors shadow-lg flex flex-col items-center group">
+    <div onClick={onClick} className="cursor-pointer select-none relative text-center p-3 border border-zinc-700 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition-colors shadow-lg flex flex-col items-center group">
       
       <span className="absolute top-2 right-3 text-zinc-500 text-xs font-bold">
         #{id}

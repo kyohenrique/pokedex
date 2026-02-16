@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react"
 import PokemonCard from "../components/PokemonCard"
+import PokemonModal from "../components/PokemonModal"
 
 interface Pokemon {
   name: string;
@@ -15,6 +16,9 @@ export default function Home() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([])
   const [nextUrl, setNextUrl] = useState<string | null>(null) 
   const [loading, setLoading] = useState(false) 
+
+  const [selectedPokemonUrl, setSelectedPokemonUrl] = useState<string | null>(null)
+
   const fetchPokemons = useCallback(async (url: string, isLoadMore = false) => {
     setLoading(true)
     try {
@@ -56,6 +60,7 @@ export default function Home() {
               key={pokemon.name} 
               name={pokemon.name} 
               url={pokemon.url} 
+              onClick={() => setSelectedPokemonUrl(pokemon.url)}
             />
           ))}
         </div>
@@ -70,6 +75,13 @@ export default function Home() {
           </button>
         )}
       </div>
+
+      {selectedPokemonUrl && (
+        <PokemonModal 
+          url={selectedPokemonUrl} 
+          onClose={() => setSelectedPokemonUrl(null)} 
+        />
+      )}
     </div>
   )
 }
