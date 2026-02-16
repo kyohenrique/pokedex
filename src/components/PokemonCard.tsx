@@ -6,8 +6,21 @@ interface PokemonCardProps {
   url: string;
 }
 
+interface PokemonType {
+  type: {
+    name: string;
+  }
+}
+
+interface PokemonDetails {
+  types: PokemonType[];
+  sprites: {
+      front_default: string;
+  }
+}
+
 export default function PokemonCard({ name, url }: PokemonCardProps) {
-  const [detalhes, setDetalhes] = useState<any>(null)
+  const [detalhes, setDetalhes] = useState<PokemonDetails | null>(null)
 
   const partes = url.split('/')
   const id = partes[partes.length - 2]
@@ -15,9 +28,13 @@ export default function PokemonCard({ name, url }: PokemonCardProps) {
 
   useEffect(() => {
     async function carregarDetalhes() {
-      const resposta = await fetch(url)
-      const dados = await resposta.json()
-      setDetalhes(dados)
+      try {
+        const resposta = await fetch(url)
+        const dados = await resposta.json()
+        setDetalhes(dados)
+      } catch (err) {
+        console.error("Erro card:", err)
+      }
     }
     carregarDetalhes()
   }, [url])
@@ -33,6 +50,7 @@ export default function PokemonCard({ name, url }: PokemonCardProps) {
         src={image} 
         alt={name} 
         className="w-24 h-24 group-hover:scale-110 transition-transform" 
+        loading="lazy" 
       />
       
       <h2 className="text-lg font-bold capitalize text-white mb-1">
@@ -40,7 +58,7 @@ export default function PokemonCard({ name, url }: PokemonCardProps) {
       </h2>
 
       <div className="flex gap-2 mt-1 justify-center">
-        {detalhes && detalhes.types.map((item: any) => {
+        {detalhes && detalhes.types.map((item) => {
           const cor = typeColors[item.type.name] || "bg-zinc-600"
           
           return (
