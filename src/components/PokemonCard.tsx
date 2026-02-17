@@ -16,28 +16,28 @@ interface PokemonType {
 interface PokemonDetails {
   types: PokemonType[];
   sprites: {
-      front_default: string;
+    front_default: string;
   }
 }
 
 export default function PokemonCard({ name, url, onClick }: PokemonCardProps) {
-  const [detalhes, setDetalhes] = useState<PokemonDetails | null>(null)
+  const [details, setDetails] = useState<PokemonDetails | null>(null)
 
   const partes = url.split('/')
   const id = partes[partes.length - 2]
   const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
 
   useEffect(() => {
-    async function carregarDetalhes() {
+    async function fetchDetails() {
       try {
         const resposta = await fetch(url)
         const dados = await resposta.json()
-        setDetalhes(dados)
+        setDetails(dados)
       } catch (err) {
-        console.error("Erro card:", err)
+        console.error("Erro ao carregar detalhes do card:", err)
       }
     }
-    carregarDetalhes()
+    fetchDetails()
   }, [url])
 
   return (
@@ -59,7 +59,7 @@ export default function PokemonCard({ name, url, onClick }: PokemonCardProps) {
       </h2>
 
       <div className="flex gap-2 mt-1 justify-center">
-        {detalhes && detalhes.types.map((item) => {
+        {details && details.types.map((item) => {
           const cor = typeColors[item.type.name] || "bg-zinc-600"
           
           return (

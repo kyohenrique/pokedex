@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { typeColors } from "../utils/typeColors"
+import { Volume2 } from "lucide-react"  // 👈 Adicione essa importação
 
 interface PokemonModalProps {
   url: string;
@@ -95,8 +96,9 @@ export default function PokemonModal({ url, onClose }: PokemonModalProps) {
                 alt={data.name} 
                 className="w-48 h-48 object-contain drop-shadow-xl hover:scale-105 transition-transform"
               />
-              <span className="absolute bottom-0 right-0 bg-zinc-800 text-xs px-2 py-1 rounded-full text-zinc-400 group-hover:text-white transition-colors">
-                🔊 Clique para ouvir
+              <span className="absolute bottom-0 right-0 bg-zinc-800 text-xs px-2 py-1 rounded-full text-zinc-400 group-hover:text-white transition-colors flex items-center gap-1">
+                <Volume2 size={12} />
+                Clique para ouvir
               </span>
             </div>
 
